@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyPulse | Modern Weather Forecasts</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- Theme Toggle -->
+        <div class="theme-toggle">
+            <input type="checkbox" id="theme-switch" class="theme-switch">
+            <label for="theme-switch" class="theme-label">
+                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
+                <div class="theme-ball"></div>
+            </label>
+        </div>
+
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="logo-container">
+                <i class="fa-solid fa-cloud-bolt logo-icon"></i>
+                <h1 class="app-title">SkyPulse</h1>
+            </div>
+            <p class="app-subtitle">Real-time weather with stunning clarity</p>
+        </header>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-box-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="city-input" class="search-box" placeholder="Search for a city..." autocomplete="off">
+                <button id="search-btn" class="search-btn">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="search-suggestions" id="search-suggestions"></div>
+            <button id="location-btn" class="location-btn">
+                <i class="fas fa-location-crosshairs"></i>
+                <span>Use My Location</span>
+            </button>
+        </div>
+
+        <!-- Weather Display -->
+        <main class="weather-display">
+            <!-- Loading State -->
+            <div id="loading-container" class="loading-container">
+                <div class="loading-animation">
+                    <div class="cloud-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <div class="rain-drops">
+                        <div class="drop"></div>
+                        <div class="drop"></div>
+                        <div class="drop"></div>
+                    </div>
+                </div>
+                <p class="loading-text">Gathering weather data...</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="error-container" class="error-container">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="error-content">
+                    <h3 class="error-title">Oops! Something went wrong</h3>
+                    <p id="error-message" class="error-message">We couldn't find the weather data for this location.</p>
+                </div>
+                <button id="error-dismiss-btn" class="error-dismiss-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Current Weather -->
+            <section id="current-weather" class="current-weather">
+                <div class="weather-header">
+                    <div class="location-info">
+                        <h2 id="city-name" class="city-name">--</h2>
+                        <div class="date-info">
+                            <i class="far fa-calendar-alt"></i>
+                            <span id="current-date">--</span>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button id="refresh-btn" class="action-btn" title="Refresh data">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button id="share-btn" class="action-btn" title="Share weather">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                        <button id="favorite-btn" class="action-btn" title="Add to favorites">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="weather-main">
+                    <div class="temperature-display">
+                        <div class="temperature-container">
+                            <h2 id="temperature" class="temperature">--°</h2>
+                            <div class="feels-like">
+                                <span>Feels like</span>
+                                <span id="feels-like">--°</span>
+                            </div>
+                        </div>
+                        <div class="temp-unit-toggle">
+                            <button id="celsius" class="unit-btn active">°C</button>
+                            <button id="fahrenheit" class="unit-btn">°F</button>
+                        </div>
+                    </div>
+                    <div class="weather-visual">
+                        <div class="weather-icon-container">
+                            <img id="weather-icon" class="weather-icon" src="" alt="Weather condition">
+                        </div>
+                        <div class="weather-description-container">
+                            <h3 id="weather-description" class="weather-description">--</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weather Stats -->
+                <div class="weather-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-wind"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4 class="stat-title">Wind Speed</h4>
+                            <p id="wind-speed" class="stat-value">-- km/h</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4 class="stat-title">Humidity</h4>
+                            <p id="humidity" class="stat-value">--%</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4 class="stat-title">UV Index</h4>
+                            <p id="uv-index" class="stat-value">--</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4 class="stat-title">Visibility</h4>
+                            <p id="visibility" class="stat-value">-- km</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Air Quality -->
+                <div class="air-quality-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-lungs"></i> Air Quality Index
+                    </h3>
+                    <div class="aqi-container">
+                        <div class="aqi-gauge">
+                            <div class="aqi-value-container">
+                                <span id="aqi-value" class="aqi-value">--</span>
+                            </div>
+                            <div class="aqi-scale">
+                                <div class="scale-item good"></div>
+                                <div class="scale-item moderate"></div>
+                                <div class="scale-item unhealthy"></div>
+                                <div class="scale-item very-unhealthy"></div>
+                                <div class="scale-item hazardous"></div>
+                            </div>
+                        </div>
+                        <div class="aqi-description">
+                            <p id="aqi-text" class="aqi-text">Air quality information unavailable</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Forecast Tabs -->
+            <section class="forecast-section">
+                <div class="forecast-tabs">
+                    <button id="hourly-tab" class="tab-btn">Hourly Forecast</button>
+                    <button id="daily-tab" class="tab-btn active">Daily Forecast</button>
+                </div>
+
+                <!-- Hourly Forecast -->
+                <div id="hourly-forecast" class="forecast-container hourly-forecast">
+                    <!-- Hourly forecast items will be added here -->
+                </div>
+
+                <!-- Daily Forecast -->
+                <div id="daily-forecast" class="forecast-container daily-forecast active">
+                    <!-- Daily forecast items will be added here -->
+                </div>
+            </section>
+
+            <!-- Weather Map -->
+            <section class="weather-map-section">
+                <h3 class="section-title">
+                    <i class="fas fa-map-marked-alt"></i> Weather Map
+                </h3>
+                <div id="weather-map" class="weather-map">
+                    <div class="map-placeholder">
+                        <i class="fas fa-map"></i>
+                        <p>Interactive weather map will appear here</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Recent & Favorites -->
+        <section class="user-locations">
+            <div class="tabs-container">
+                <button id="recent-tab" class="location-tab-btn active">Recent</button>
+                <button id="favorites-tab" class="location-tab-btn">Favorites</button>
+            </div>
+            
+            <!-- Recent Searches -->
+            <div id="recent-container" class="locations-container active">
+                <div id="recent-searches-list" class="locations-list">
+                    <!-- Recent searches will be added here -->
+                </div>
+            </div>
+            
+            <!-- Favorite Locations -->
+            <div id="favorites-container" class="locations-container">
+                <div id="favorites-list" class="locations-list">
+                    <!-- Favorites will be added here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- App Footer -->
+        <footer class="app-footer">
+            <p class="copyright">&copy; 2025 SkyPulse | Advanced Weather Forecasting</p>
+            <p class="data-credit">Weather data provided by Open-Meteo API</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Use</a>
+                <a href="#" class="footer-link">Contact Us</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
